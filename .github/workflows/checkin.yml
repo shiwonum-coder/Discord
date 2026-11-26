@@ -1,0 +1,19 @@
+name: Daily 9AM Check-in
+
+on:
+  schedule:
+    # 00:00 UTC = 09:00 KST every day
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows manual testing anytime
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send 9AM Check-in to Discord
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d '{"content": "☕ **9:00 AM 출석 체크!**\n오늘의 포커스 한 줄 남기기. 오늘도 열심히 해 라희 <3"}' \
+               "$WEBHOOK_URL"
